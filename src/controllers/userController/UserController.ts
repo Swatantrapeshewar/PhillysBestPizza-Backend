@@ -1,7 +1,4 @@
 import express from 'express';
-import { IUserDatastore } from '../../database/datastores/UserDatastore.interface';
-import { IUserRepository } from '../../repositories/UserRepository.interface';
-import { UserDatastore } from '../../database/datastores/UserDatastore';
 import { UserRepository } from '../../repositories/UserRepositoy';
 
 const userRepository = new UserRepository();
@@ -14,8 +11,8 @@ class UserController {
 		next: express.NextFunction,
 	) => {
 		try {
-			const { email, password } = req.body;
-			const user = await userRepository.userLogin(email, password);
+			const { email } = req.body;
+			const user = await userRepository.userLogin(email);
 			res.status(200).json({ user });
 		} catch (error) {
 			next(error);

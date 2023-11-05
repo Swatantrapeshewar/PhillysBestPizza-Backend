@@ -1,7 +1,6 @@
-import { User } from '../../database/entities/User';
-
+import { FormattedUserResponse } from '../../common/helpers/ResponseHandle';
 export interface ILogin {
-	user: any;
+	user: FormattedUserResponse;
 	accessToken: string;
 	refreshToken: string;
 }

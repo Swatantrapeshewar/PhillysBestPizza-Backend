@@ -7,17 +7,16 @@ import {
 	JoinColumn,
 	CreateDateColumn,
 	UpdateDateColumn,
-	DeleteDateColumn,
 } from 'typeorm';
 import { UserRole } from './UserRole';
 
 @Entity('AccessToken')
 export class ExpiredToken extends BaseEntity {
 	@PrimaryColumn({ type: 'varchar', length: 64 })
-	public id: string;
+	public id!: string;
 
 	@Column({ type: 'text' })
-	public token: string;
+	public token!: string;
 
 	@ManyToOne(() => UserRole, {
 		onDelete: 'CASCADE',
@@ -25,13 +24,13 @@ export class ExpiredToken extends BaseEntity {
 		nullable: false,
 	})
 	@JoinColumn({ name: 'roleId' })
-	public role: UserRole;
+	public role!: UserRole;
 
 	@CreateDateColumn()
-	public createdAt: Date;
+	public createdAt!: Date;
 
 	@UpdateDateColumn()
-	public updatedAt: Date;
+	public updatedAt!: Date;
 }
 
 export default ExpiredToken;

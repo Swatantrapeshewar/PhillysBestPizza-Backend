@@ -18,21 +18,21 @@ export enum tokenType {
 @Entity('EmailToken')
 export class EmailToken extends BaseEntity {
 	@PrimaryColumn({ type: 'varchar', length: 64 })
-	public id: string;
+	public id!: string;
 
 	@ManyToOne(() => UserRole, { onUpdate: 'CASCADE', onDelete: 'CASCADE' })
 	@JoinColumn({ name: 'roleId' })
-	public role: UserRole;
+	public role!: UserRole;
 
 	@Column({ type: 'text' })
-	public token: string;
+	public token!: string;
 
 	@Column({ type: 'enum', enum: tokenType })
-	public tokenType: string;
+	public tokenType!: string;
 
 	@CreateDateColumn()
-	public createdAt: Date;
+	public createdAt!: Date;
 
 	@UpdateDateColumn()
-	public updatedAt: Date;
+	public updatedAt!: Date;
 }

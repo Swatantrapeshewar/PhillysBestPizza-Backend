@@ -5,8 +5,6 @@ import {
 	PrimaryColumn,
 	CreateDateColumn,
 	UpdateDateColumn,
-	ManyToOne,
-	JoinColumn,
 	OneToOne,
 	OneToMany,
 } from 'typeorm';
@@ -16,13 +14,13 @@ import { Branch } from './Branch';
 @Entity('User')
 export class User extends BaseEntity {
 	@PrimaryColumn({ type: 'varchar', length: 64 })
-	public id: string;
+	public id!: string;
 
 	@Column({ type: 'varchar', length: 255, unique: true })
-	public email: string;
+	public email!: string;
 
 	@Column({ type: 'varchar', length: 255 })
-	public password: string;
+	public password!: string;
 
 	@Column({ type: 'varchar', length: 64, nullable: true })
 	public firstName?: string;
@@ -40,20 +38,20 @@ export class User extends BaseEntity {
 	public phoneNumber?: number | null;
 
 	@Column({ type: 'integer', default: 0 })
-	public loginAttempt: number;
+	public loginAttempt!: number;
 
 	@Column({ type: 'datetime', nullable: true })
 	public loginAttemptAt?: Date | null;
 
 	@CreateDateColumn()
-	public createdAt: Date;
+	public createdAt!: Date;
 
 	@UpdateDateColumn()
-	public updatedAt: Date;
+	public updatedAt!: Date;
 
 	@OneToOne(() => UserRole, (userRole) => userRole.user)
-	public role: UserRole;
+	public role!: UserRole;
 
 	@OneToMany(() => Branch, (branch) => branch.user)
-	public branch: Branch[];
+	public branch!: Branch[];
 }

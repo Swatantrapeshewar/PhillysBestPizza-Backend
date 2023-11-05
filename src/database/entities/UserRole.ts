@@ -4,7 +4,6 @@ import {
 	Column,
 	CreateDateColumn,
 	UpdateDateColumn,
-	ManyToOne,
 	JoinColumn,
 	OneToOne,
 } from 'typeorm';
@@ -19,30 +18,30 @@ export enum roleName {
 @Entity('UserRole')
 export class UserRole {
 	@PrimaryColumn({ type: 'varchar', length: 64 })
-	public id: string;
+	public id!: string;
 
 	@OneToOne(() => User, { onUpdate: 'CASCADE', onDelete: 'CASCADE' })
 	@JoinColumn({ name: 'userId' })
-	public user: User;
+	public user!: User;
 
 	@Column({ type: 'enum', enum: roleName })
-	public roleName: string;
+	public roleName!: string;
 
 	@Column({
 		type: 'tinyint',
 		width: 1,
 	})
-	public isVerified: boolean;
+	public isVerified!: boolean;
 
 	@Column({
 		type: 'tinyint',
 		width: 1,
 	})
-	public isActivated: boolean;
+	public isActivated!: boolean;
 
 	@CreateDateColumn()
-	public createdAt: Date;
+	public createdAt!: Date;
 
 	@UpdateDateColumn()
-	public updatedAt: Date;
+	public updatedAt!: Date;
 }

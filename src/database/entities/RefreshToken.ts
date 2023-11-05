@@ -13,21 +13,21 @@ import { UserRole } from './UserRole';
 @Entity('RefreshToken')
 export class RefreshToken extends BaseEntity {
 	@PrimaryColumn({ type: 'varchar', length: 64 })
-	public id: string;
+	public id!: string;
 
 	@ManyToOne(() => UserRole, { onUpdate: 'CASCADE', onDelete: 'CASCADE' })
 	@JoinColumn({ name: 'roleId' })
-	public role: UserRole;
+	public role!: UserRole;
 
 	@Column({ type: 'text' })
-	public token: string;
+	public token!: string;
 
 	@Column({ type: 'text' })
-	public slackToken: string;
+	public slackToken!: string;
 
 	@CreateDateColumn()
-	public createdAt: Date;
+	public createdAt!: Date;
 
 	@UpdateDateColumn()
-	public updatedAt: Date;
+	public updatedAt!: Date;
 }

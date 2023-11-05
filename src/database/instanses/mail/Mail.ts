@@ -21,7 +21,7 @@ export class Mail implements IMail {
 			},
 		});
 		// send mail with defined transport object
-		let info = await transporter.sendMail({
+		await transporter.sendMail({
 			from: appConfig.email.fromEmail, // sender address
 			to: to, // list of receivers
 			subject: sub, // Subject line

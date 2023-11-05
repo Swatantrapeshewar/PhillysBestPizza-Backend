@@ -1,4 +1,3 @@
-import { DataSource, EntityManager } from 'typeorm';
 import { IUserDatastore } from './UserDatastore.interface';
 import { User } from '../entities/User';
 import dataSource from '../dataSource';
@@ -8,7 +7,7 @@ export class UserDatastore implements IUserDatastore {
 	constructor() {}
 
 	public async getById(userId: string): Promise<User> {
-		let queryResult: User | undefined;
+		let queryResult: User | null = null;
 		await dataSource.transaction(async (manager) => {
 			queryResult = await manager
 				.getRepository(User)
@@ -27,7 +26,7 @@ export class UserDatastore implements IUserDatastore {
 	}
 
 	public async getUserByEmail(email: string): Promise<User> {
-		let queryResult: User | undefined;
+		let queryResult: User | null = null;
 		await dataSource.transaction(async (manager) => {
 			queryResult = await manager
 				.getRepository(User)
@@ -46,7 +45,7 @@ export class UserDatastore implements IUserDatastore {
 	}
 
 	public async getUserRoleById(userId: string): Promise<UserRole> {
-		let queryResult: UserRole | undefined;
+		let queryResult: UserRole | null = null;
 		await dataSource.transaction(async (manager) => {
 			queryResult = await manager
 				.getRepository(UserRole)
