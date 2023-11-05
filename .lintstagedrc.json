@@ -1,6 +1,6 @@
 {
     "*.ts": [
-      "prettier --write",
-      "eslint"
+      "npm run format",
+      "npm run lint"
     ]
   }
