@@ -4,8 +4,8 @@
 		"lib": ["es5", "es6"],
 		"declaration": true,
 		"declarationMap": true,
-		"target": "ES2021",
-		"module": "ESNext",
+		"target": "ES6",
+		"module": "CommonJS",
 		"moduleResolution": "node",
 		"outDir": "./build",
 		"esModuleInterop": true,
@@ -14,5 +14,6 @@
 		"emitDecoratorMetadata": true,
 		"experimentalDecorators": true,
 		"sourceMap": true
-	}
+	},
+	"include": ["src/**/*.ts"]
 }

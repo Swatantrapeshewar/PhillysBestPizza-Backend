@@ -1,4 +1,3 @@
-// import express from "express";
 import Express from 'express';
 import * as env from 'dotenv';
 import routes from './routes';
