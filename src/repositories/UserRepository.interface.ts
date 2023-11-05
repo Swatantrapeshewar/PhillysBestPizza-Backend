@@ -1,5 +1,5 @@
-import { ILogin } from "../controllers/responseType/ILogin";
+import { ILogin } from '../controllers/responseType/ILogin';
 
 export interface IUserRepository {
-    userLogin(email: string, password: string): Promise<ILogin>
+	userLogin(email: string, password: string): Promise<ILogin>;
 }

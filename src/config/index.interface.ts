@@ -1,17 +1,17 @@
-import config from "./config";
+import config from './config';
 
 export interface IAppConfig {
-  email: {
-    host: string;
-    port: number;
-    fromEmail: string;
-    secure: boolean;
-    auth: {
-      user: string;
-      pass: string;
-    };
-    logger: boolean;
-  };
+	email: {
+		host: string;
+		port: number;
+		fromEmail: string;
+		secure: boolean;
+		auth: {
+			user: string;
+			pass: string;
+		};
+		logger: boolean;
+	};
 }
 const appConfig: IAppConfig = config;
 

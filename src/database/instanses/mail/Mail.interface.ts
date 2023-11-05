@@ -1,3 +1,3 @@
 export interface IMail {
-    sendRegistrationEmail(): Promise<void>
+	sendRegistrationEmail(): Promise<void>;
 }
