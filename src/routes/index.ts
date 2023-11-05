@@ -20,4 +20,4 @@ class Routes {
 	}
 }
 
-export const routes = new Routes().getRouter();
+export default Routes;

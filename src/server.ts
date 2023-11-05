@@ -1,19 +1,36 @@
 import express, { Application } from 'express';
 import dotenv from 'dotenv';
-import { routes } from './routes';
+import Routes from './routes';
 
-dotenv.config();
+class Server {
+	private app: Application;
+	private routes: Routes;
+	private port: number;
 
-const PORT = process.env.PORT || 3000;
-const app: Application = express();
+	constructor() {
+		this.app = express();
+		this.routes = new Routes();
+		this.port = Number(process.env.PORT) || 3000;
 
-// Middleware
-app.use(express.json());
+		dotenv.config();
+		this.configureMiddleware();
+		this.configureRoutes();
+		this.startServer();
+	}
 
-// Routes
-app.use('/api', routes);
+	private configureMiddleware() {
+		this.app.use(express.json());
+	}
 
-// Start the server
-app.listen(PORT, () => {
-	console.log(`Server is running on port ${PORT}`);
-});
+	private configureRoutes() {
+		this.app.use('/api', this.routes.getRouter());
+	}
+
+	private startServer() {
+		this.app.listen(this.port, () => {
+			console.log(`Server is running on port ${this.port}`);
+		});
+	}
+}
+
+new Server();
