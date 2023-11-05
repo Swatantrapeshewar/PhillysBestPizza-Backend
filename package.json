@@ -43,6 +43,7 @@
 		"typescript": "^5.2.2"
 	},
 	"lint-staged": {
-		"*": "prettier --ignore-unknown --write"
+		"*": "prettier --ignore-unknown --write",
+		".ts": "npm run lint"
 	}
 }
