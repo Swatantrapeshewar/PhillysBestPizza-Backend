@@ -1,15 +1,19 @@
-import Express from 'express';
-import * as env from 'dotenv';
-import routes from './routes';
+import express, { Application } from 'express';
+import dotenv from 'dotenv';
+import { routes } from './routes';
 
-env.config();
-const PORT = 3000;
+dotenv.config();
 
-const app = Express();
-app.use(Express.json());
+const PORT = process.env.PORT || 3000;
+const app: Application = express();
 
+// Middleware
+app.use(express.json());
+
+// Routes
 app.use('/api', routes);
 
+// Start the server
 app.listen(PORT, () => {
-	console.log(`Server running on http://localhost:${PORT}`);
+	console.log(`Server is running on port ${PORT}`);
 });

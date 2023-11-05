@@ -13,7 +13,7 @@ class UserRoutes {
 
 	private setupRoutes() {
 		// Auth the user
-		this.router.post('/api/users/login', this.userController.authUser);
+		this.router.post('/login', this.userController.authUser);
 	}
 
 	public getRouter() {
@@ -21,4 +21,4 @@ class UserRoutes {
 	}
 }
 
-export default new UserRoutes().getRouter();
+export default UserRoutes;

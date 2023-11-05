@@ -1,8 +1,23 @@
 import express from 'express';
-import userRoutes from './userRoutes/UserRoutes';
+import UserRoutes from './userRoutes/UserRoutes';
 
-const router = express.Router();
+class Routes {
+	private router: express.Router;
+	private userRoutes: UserRoutes;
 
-router.use('/user', userRoutes);
+	constructor() {
+		this.router = express.Router();
+		this.userRoutes = new UserRoutes();
+		this.initRoutes();
+	}
 
-export default router;
+	private initRoutes() {
+		this.router.use('/user', this.userRoutes.getRouter());
+	}
+
+	public getRouter(): express.Router {
+		return this.router;
+	}
+}
+
+export const routes = new Routes().getRouter();
