@@ -3,7 +3,6 @@ import { userResponse } from '../common/helpers/ResponseHandle';
 import { UserDatastore } from '../database/datastores/UserDatastore';
 import { ILogin } from '../controllers/responseType/ILogin';
 
-// @injectable()ś
 const userDatastore = new UserDatastore();
 export class UserRepository implements IUserRepository {
 	constructor() {}

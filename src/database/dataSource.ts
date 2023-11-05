@@ -22,5 +22,5 @@ export function getConfig() {
 }
 
 const datasource = new DataSource(getConfig());
-datasource.initialize();
+void datasource.initialize();
 export default datasource;

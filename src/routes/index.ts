@@ -1,18 +1,8 @@
-import { Request, Response, Application } from 'express';
-import UserController from '../controllers/userController/UserController';
+import express from 'express';
+import userRoutes from './userRoutes/UserRoutes';
 
-const userContorller = new UserController();
-export class Routes {
-	/**
-	 * @author Aman kumar Choudhary
-	 */
+const router = express.Router();
 
-	public router = (app: Application) => {
-		app.post('/user/login', userContorller.userLogin);
-		app.get('/', (req: Request, res: Response) => {
-			res.send("hii it's runnig...");
-		});
-	};
-}
+router.use('/user', userRoutes);
 
-export const route = new Routes().router;
+export default router;
