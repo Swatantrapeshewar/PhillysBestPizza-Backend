@@ -1,5 +1,7 @@
 import express, { Application } from 'express';
 import dotenv from 'dotenv';
+import cors, { CorsOptions } from 'cors';
+
 import Routes from './routes';
 
 class Server {
@@ -20,6 +22,12 @@ class Server {
 
 	private configureMiddleware() {
 		this.app.use(express.json());
+		const corsOptions: CorsOptions = {
+			origin: 'http://localhost:1234',
+			methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+			credentials: true,
+		};
+		this.app.use(cors(corsOptions));
 	}
 
 	private configureRoutes() {
