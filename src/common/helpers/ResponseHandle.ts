@@ -10,10 +10,10 @@ export interface FormattedUserResponse {
 	avatar: string | undefined;
 	phoneNumber: number | undefined;
 	role: UserRole;
-	branch: Branch[];
+	branch: Branch;
 }
 
-export const userResponse = (user: User): FormattedUserResponse => ({
+export const userResponse = (user: User) => ({
 	id: user.id,
 	email: user.email,
 	firstName: user.firstName ?? undefined,
@@ -21,5 +21,11 @@ export const userResponse = (user: User): FormattedUserResponse => ({
 	avatar: user.avatar ?? undefined,
 	phoneNumber: user.phoneNumber ?? undefined,
 	role: user.role,
-	branch: user.branch,
+	branch: user?.branch,
+});
+
+export const userBranchResponse = (branch: Branch) => ({
+	id: branch.id,
+	storeName: branch.storeName,
+	storeAddress: branch.storeAddress,
 });

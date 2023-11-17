@@ -13,6 +13,7 @@ import { UserRole } from './UserRole';
 export enum tokenType {
 	forgotPassword = 'forgotpassword',
 	registration = 'registration',
+	invite = 'invite',
 }
 
 @Entity('EmailToken')

@@ -11,7 +11,7 @@ export function getConfig() {
 		driver: mysqlDriver,
 		type: 'mysql',
 		host: 'localhost',
-		port: 4306,
+		port: 3306,
 		username: 'root',
 		password: '',
 		database: 'phillypizza_local',

@@ -4,8 +4,7 @@ import {
 	Column,
 	CreateDateColumn,
 	UpdateDateColumn,
-	JoinColumn,
-	ManyToOne,
+	OneToMany,
 } from 'typeorm';
 import { User } from './User';
 
@@ -21,7 +20,7 @@ export class Branch {
 	public storeAddress!: string;
 
 	@Column({ type: 'bigint', nullable: true })
-	public phoneNumber!: number;
+	public phoneNumber?: number | null;
 
 	@Column({ type: 'text', nullable: true })
 	public image?: string | null;
@@ -32,7 +31,6 @@ export class Branch {
 	@UpdateDateColumn()
 	public updatedAt!: Date;
 
-	@ManyToOne(() => User, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
-	@JoinColumn({ name: 'userId' })
-	public user!: User;
+	@OneToMany(() => User, (user) => user.branch)
+	public user!: User[];
 }

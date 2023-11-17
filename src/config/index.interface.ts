@@ -1,6 +1,15 @@
 import config from './config';
 
 export interface IAppConfig {
+	app: {
+		frontend: {
+			baseUrl: string;
+			accountSetup: string;
+		};
+		backend: {
+			baseUrl: string;
+		};
+	};
 	email: {
 		host: string;
 		port: number;
@@ -12,6 +21,8 @@ export interface IAppConfig {
 		};
 		logger: boolean;
 	};
+
+	jwtSecretKey: string;
 }
 const appConfig: IAppConfig = config;
 

@@ -6,7 +6,9 @@ import {
 	CreateDateColumn,
 	UpdateDateColumn,
 	OneToOne,
-	OneToMany,
+	// OneToMany,
+	JoinColumn,
+	ManyToOne,
 } from 'typeorm';
 import { UserRole } from './UserRole';
 import { Branch } from './Branch';
@@ -52,6 +54,7 @@ export class User extends BaseEntity {
 	@OneToOne(() => UserRole, (userRole) => userRole.user)
 	public role!: UserRole;
 
-	@OneToMany(() => Branch, (branch) => branch.user)
-	public branch!: Branch[];
+	@ManyToOne(() => Branch, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
+	@JoinColumn({ name: 'branchId' })
+	public branch!: Branch;
 }

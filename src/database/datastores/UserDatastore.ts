@@ -1,13 +1,12 @@
-import { IUserDatastore } from './UserDatastore.interface';
 import { User } from '../entities/User';
 import dataSource from '../dataSource';
 import { UserRole } from '../entities/UserRole';
 
-export class UserDatastore implements IUserDatastore {
+export class UserDatastore {
 	constructor() {}
 
-	public async getById(userId: string): Promise<User> {
-		let queryResult: User | null = null;
+	public async getById(userId: string): Promise<User | undefined> {
+		let queryResult: User | undefined | null;
 		await dataSource.transaction(async (manager) => {
 			queryResult = await manager
 				.getRepository(User)
@@ -19,14 +18,11 @@ export class UserDatastore implements IUserDatastore {
 
 		if (queryResult) {
 			return queryResult;
-		} else {
-			// Handle the case where no user was found with the given ID.
-			throw new Error(`No user found with ID ${userId}`);
 		}
 	}
 
-	public async getUserByEmail(email: string): Promise<User> {
-		let queryResult: User | null = null;
+	public async getUserByEmail(email: string): Promise<User | undefined> {
+		let queryResult: User | undefined | null;
 		await dataSource.transaction(async (manager) => {
 			queryResult = await manager
 				.getRepository(User)
@@ -39,13 +35,13 @@ export class UserDatastore implements IUserDatastore {
 
 		if (queryResult) {
 			return queryResult;
-		} else {
-			throw new Error(`No user found with ID ${email}`);
 		}
 	}
 
-	public async getUserRoleById(userId: string): Promise<UserRole> {
-		let queryResult: UserRole | null = null;
+	public async getUserRoleById(
+		userId: string,
+	): Promise<UserRole | undefined> {
+		let queryResult: UserRole | undefined | null;
 		await dataSource.transaction(async (manager) => {
 			queryResult = await manager
 				.getRepository(UserRole)
@@ -57,8 +53,28 @@ export class UserDatastore implements IUserDatastore {
 
 		if (queryResult) {
 			return queryResult;
-		} else {
-			throw new Error(`No user role found`);
+		}
+	}
+
+	public async save(user: User): Promise<User | undefined> {
+		let queryResult: User | undefined;
+		await dataSource.transaction(async (manager) => {
+			queryResult = await manager.save(user);
+		});
+		if (queryResult) {
+			return queryResult;
+		}
+	}
+
+	public async saveUserRole(
+		userRole: UserRole,
+	): Promise<UserRole | undefined> {
+		let queryResult: UserRole | undefined;
+		await dataSource.transaction(async (manager) => {
+			queryResult = await manager.save(userRole);
+		});
+		if (queryResult) {
+			return queryResult;
 		}
 	}
 }

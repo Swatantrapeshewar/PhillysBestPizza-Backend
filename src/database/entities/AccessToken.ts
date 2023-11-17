@@ -11,7 +11,7 @@ import {
 import { UserRole } from './UserRole';
 
 @Entity('AccessToken')
-export class ExpiredToken extends BaseEntity {
+export class AccessToken extends BaseEntity {
 	@PrimaryColumn({ type: 'varchar', length: 64 })
 	public id!: string;
 
@@ -33,4 +33,4 @@ export class ExpiredToken extends BaseEntity {
 	public updatedAt!: Date;
 }
 
-export default ExpiredToken;
+export default AccessToken;
