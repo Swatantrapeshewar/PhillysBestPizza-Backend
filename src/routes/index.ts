@@ -1,10 +1,27 @@
 import express from 'express';
-import userRoutes from './userRoutes/UserRoutes';
-import branchRoutes from './branchRoutes/BranchRoutes';
+import UserRoutes from './userRoutes/UserRoutes';
+import { BranchRoutes } from './branchRoutes/BranchRoutes';
 
-const router = express.Router();
+class Routes {
+	private router: express.Router;
+	private userRoutes: UserRoutes;
+	private branchRoutes: BranchRoutes;
 
-router.use('/user', userRoutes);
-router.use('/branch', branchRoutes);
+	constructor() {
+		this.router = express.Router();
+		this.userRoutes = new UserRoutes();
+		this.branchRoutes = new BranchRoutes();
+		this.initRoutes();
+	}
 
-export default router;
+	private initRoutes() {
+		this.router.use('/user', this.userRoutes.getRouter());
+		this.router.use('/branch', this.branchRoutes.getRouter());
+	}
+
+	public getRouter(): express.Router {
+		return this.router;
+	}
+}
+
+export default Routes;

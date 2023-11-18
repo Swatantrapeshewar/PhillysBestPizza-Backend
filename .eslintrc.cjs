@@ -12,7 +12,8 @@ module.exports = {
 		tsconfigRootDir: __dirname,
 		project: ['./tsconfig.json'],
 	},
-	// rules: {
-	//   "@typescript-eslint/no-unused-vars": "off",
-	// }
+	rules: {
+		//   "@typescript-eslint/no-unused-vars": "off",
+		' @typescript-eslint/no-unsafe-call': 'off',
+	},
 };

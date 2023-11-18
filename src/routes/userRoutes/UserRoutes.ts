@@ -31,4 +31,4 @@ class UserRoutes {
 	}
 }
 
-export default new UserRoutes().getRouter();
+export default UserRoutes;
