@@ -43,7 +43,7 @@ export class UserRepository {
 			userDetail.password,
 		);
 		if (!compare) {
-			throw new Error(`Password dose not match`);
+			throw new Error(`Password does not match`);
 		}
 		const userRole = await this.userDatastore.getUserRoleById(
 			userDetail.id,
