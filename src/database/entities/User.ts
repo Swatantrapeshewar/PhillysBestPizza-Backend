@@ -9,9 +9,11 @@ import {
 	// OneToMany,
 	JoinColumn,
 	ManyToOne,
+	OneToMany,
 } from 'typeorm';
 import { UserRole } from './UserRole';
 import { Branch } from './Branch';
+import { InventoryItems } from './InventoryItems';
 
 @Entity('User')
 export class User extends BaseEntity {
@@ -57,4 +59,7 @@ export class User extends BaseEntity {
 	@ManyToOne(() => Branch, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
 	@JoinColumn({ name: 'branchId' })
 	public branch!: Branch;
+
+	@OneToMany(() => InventoryItems, (inventoryItem) => inventoryItem.user)
+	public inventoryItem!: InventoryItems[];
 }
