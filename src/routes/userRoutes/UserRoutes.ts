@@ -24,6 +24,11 @@ class UserRoutes {
 		);
 		this.router.post('/verify', this.userController.verifyUser);
 		this.router.post('/setup', this.userController.accoutSetup);
+		this.router.get(
+			'/listByBranch/:branchId',
+			this.auth.verifyAccessToken,
+			this.userController.usersListByBranch,
+		);
 	}
 
 	public getRouter() {

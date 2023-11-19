@@ -1,8 +1,8 @@
 export default {
 	app: {
 		frontend: {
-			baseUrl: 'http://localhost:5000',
-			accountSetup: '/accountSetip',
+			baseUrl: 'http://localhost:1234',
+			accountSetup: '/accountSetup',
 		},
 		backend: {
 			baseUrl: 'http://localhost:3001',

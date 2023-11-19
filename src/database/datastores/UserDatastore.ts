@@ -77,4 +77,25 @@ export class UserDatastore {
 			return queryResult;
 		}
 	}
+
+	public async getUsersListByBranch(
+		branchId: string,
+	): Promise<User[] | undefined> {
+		let queryResult: User[] | undefined | null;
+		await dataSource.transaction(async (manager) => {
+			queryResult = await manager
+				.getRepository(User)
+				.createQueryBuilder('User')
+				.leftJoinAndSelect('User.role', 'role')
+				.leftJoinAndSelect('User.branch', 'branch')
+				.where('User.branch = :branchId', { branchId })
+				.andWhere('User.password IS NOT NULL')
+				.andWhere('User.password != :emptyString', { emptyString: '' })
+				.getMany();
+		});
+
+		if (queryResult) {
+			return queryResult;
+		}
+	}
 }

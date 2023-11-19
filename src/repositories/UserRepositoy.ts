@@ -1,5 +1,8 @@
 import { v4 as uuidv4 } from 'uuid';
-import { userResponse } from '../common/helpers/ResponseHandle';
+import {
+	FormattedUserResponse,
+	userResponse,
+} from '../common/helpers/ResponseHandle';
 import { UserDatastore } from '../database/datastores/UserDatastore';
 import { ILogin } from '../controllers/responseType/ILogin';
 import AccessToken from '../database/entities/AccessToken';
@@ -186,5 +189,27 @@ export class UserRepository {
 		const hashPass = await this.passwordManager.hashPassword(password);
 		userDetail.password = hashPass;
 		await this.userDatastore.save(userDetail);
+	}
+
+	public async getUsersListByBranchId(
+		activeUserId: string,
+		branchId: string,
+	): Promise<FormattedUserResponse[] | undefined> {
+		const existUser = await this.userDatastore.getById(activeUserId);
+		if (!existUser) {
+			throw new NotFoundException(`User not found`);
+		}
+
+		const existBranch = await this.branchDatastore.getById(branchId);
+		if (!existBranch) {
+			throw new NotFoundException(`Branch not found`);
+		}
+
+		const usersList =
+			await this.userDatastore.getUsersListByBranch(branchId);
+		const formattedResponse = usersList?.map((userDetail) =>
+			userResponse(userDetail),
+		);
+		return formattedResponse;
 	}
 }

@@ -54,8 +54,8 @@ export class BranchRepository {
 			throw new NotFoundException(`User not found`);
 		}
 
-		const getbranchs = await this.branchDatastore.getAllBranch();
-		return getbranchs;
+		const getbranches = await this.branchDatastore.getAllBranch();
+		return getbranches;
 	}
 
 	public async updateBranch(
