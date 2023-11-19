@@ -92,5 +92,26 @@ class UserController {
 			next(error);
 		}
 	};
+
+	public usersListByBranch: express.RequestHandler = async (
+		req: express.Request,
+		res: express.Response,
+		next: express.NextFunction,
+	) => {
+		try {
+			const activeUser = UserContext.getActiveUser();
+			if (!activeUser) {
+				throw new NotFoundException(`No user found`);
+			}
+			const { branchId } = req.params;
+			const usersList = await this.userRepository.getUsersListByBranchId(
+				activeUser.id,
+				branchId,
+			);
+			res.status(200).json({ usersList });
+		} catch (error) {
+			next(error);
+		}
+	};
 }
 export default UserController;

@@ -42,10 +42,10 @@ class BranchController {
 			if (!activeUser) {
 				throw new NotFoundException(`No user found`);
 			}
-			const branchs = await this.branchRepository.branchList(
+			const branches = await this.branchRepository.branchList(
 				activeUser.id,
 			);
-			res.status(200).json({ branchs });
+			res.status(200).json({ branches });
 		} catch (error) {
 			next(error);
 		}
