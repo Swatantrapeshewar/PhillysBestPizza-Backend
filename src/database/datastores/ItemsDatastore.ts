@@ -20,6 +20,7 @@ export class ItemsDatastore {
 			queryResult = await manager
 				.getRepository(Items)
 				.createQueryBuilder('Items')
+				.leftJoinAndSelect('Items.category', 'category')
 				.getMany();
 		});
 		return queryResult;

@@ -4,7 +4,7 @@ import {
 	Column,
 	CreateDateColumn,
 	UpdateDateColumn,
-	OneToOne,
+	OneToMany,
 } from 'typeorm';
 import { Items } from './Items';
 
@@ -22,6 +22,6 @@ export class Categories {
 	@UpdateDateColumn()
 	public updatedAt!: Date;
 
-	@OneToOne(() => Items, (items) => items.category)
+	@OneToMany(() => Items, (items) => items.category)
 	public item!: Items;
 }

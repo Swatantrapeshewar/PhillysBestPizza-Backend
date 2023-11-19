@@ -4,8 +4,8 @@ import {
 	Column,
 	CreateDateColumn,
 	UpdateDateColumn,
-	OneToOne,
 	JoinColumn,
+	ManyToOne,
 } from 'typeorm';
 import { Categories } from './Categories';
 
@@ -38,7 +38,7 @@ export class Items {
 	@UpdateDateColumn()
 	public updatedAt!: Date;
 
-	@OneToOne(() => Categories, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
+	@ManyToOne(() => Categories, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
 	@JoinColumn({ name: 'categoryId' })
 	public category!: Categories;
 }
