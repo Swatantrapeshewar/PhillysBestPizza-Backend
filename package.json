@@ -12,7 +12,9 @@
 		"migration-gen": "npm run typeorm migration:generate -- -d src/database/dataSource.ts",
 		"migration-run": "npx typeorm-ts-node-esm migration:run -d src/database/dataSource.ts",
 		"start": "nodemon src/server.ts",
-		"prepare": "husky install"
+		"prepare": "husky install",
+		"build": "tsc",
+		"prod": "npm run build && node build/server.js"
 	},
 	"author": "SwatantraPeshewars",
 	"license": "ISC",
