@@ -26,7 +26,7 @@ export class ItemsDatastore {
 		return queryResult;
 	}
 
-	public async deleteBranch(itemId: string): Promise<void> {
+	public async deleteItem(itemId: string): Promise<void> {
 		await dataSource.transaction(async (manager) => {
 			await manager
 				.getRepository(Items)
