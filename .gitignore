@@ -3,3 +3,4 @@ src/**/*.d.ts
 src/**/*.js
 src/**/*.map
 build/
+.env
