@@ -3,6 +3,7 @@ export default {
 		frontend: {
 			baseUrl: 'http://localhost:1234',
 			accountSetup: '/accountSetup',
+			resetPassword: '/resetPassword',
 		},
 		backend: {
 			baseUrl: 'http://localhost:3001',
