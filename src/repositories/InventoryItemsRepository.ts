@@ -4,7 +4,7 @@ import { NotFoundException } from '../common/exception/NotFoundException';
 import { ItemsDatastore } from '../database/datastores/ItemsDatastore';
 import { InventoryItems } from '../database/entities/InventoryItems';
 import { InventoryItemsDatastore } from '../database/datastores/InventroyItemsDatastore';
-import { InventroyItemsReq } from '../controllers/inventoryItemsController/inventoryItemsController';
+import { InventroyItemsReq } from '../controllers/inventoryItemsController/InventoryItemsController';
 
 export class InventoryItemsRepository {
 	private userDatastore: UserDatastore;
