@@ -17,13 +17,15 @@ class UserRoutes {
 	private setupRoutes() {
 		// Auth the user
 		this.router.post('/login', this.userController.userLogin);
+		this.router.post('/setup', this.userController.acconutSetup);
+		this.router.post('/forgotPassword', this.userController.forgotPassword);
+		this.router.post('/resetPassword', this.userController.resetPassword);
+
 		this.router.post(
 			'/invite',
 			this.auth.verifyAccessToken,
 			this.userController.inviteUser,
 		);
-		// this.router.post('/verify', this.userController.verifyUser);
-		this.router.post('/setup', this.userController.acconutSetup);
 		this.router.put(
 			'/updateProfile',
 			this.auth.verifyAccessToken,

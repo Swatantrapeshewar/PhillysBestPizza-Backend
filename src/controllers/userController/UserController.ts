@@ -105,6 +105,38 @@ class UserController {
 		}
 	};
 
+	public forgotPassword: express.RequestHandler = async (
+		req: TypedRequestBody<{ email: string }>,
+		res: express.Response,
+		next: express.NextFunction,
+	) => {
+		try {
+			const { email } = req.body;
+			await this.userRepository.forgotPassword(email);
+			res.status(200).json({});
+		} catch (error) {
+			next(error);
+		}
+	};
+
+	public resetPassword: express.RequestHandler = async (
+		req: TypedRequestBody<{
+			email: string;
+			password: string;
+			token: string;
+		}>,
+		res: express.Response,
+		next: express.NextFunction,
+	) => {
+		try {
+			const { email, password, token } = req.body;
+			await this.userRepository.resetPassword(email, password, token);
+			res.status(200).json({});
+		} catch (error) {
+			next(error);
+		}
+	};
+
 	public updateProfile: express.RequestHandler = async (
 		req: TypedRequestBody<UpdateUserReq>,
 		res: express.Response,
