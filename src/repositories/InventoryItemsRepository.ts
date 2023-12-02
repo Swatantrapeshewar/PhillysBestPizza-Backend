@@ -34,7 +34,7 @@ export class InventoryItemsRepository {
 
 		const existInventroyItem =
 			await this.inventroyItemsDatastroe.getByItemId(itemId);
-		if (!existInventroyItem) {
+		if (existInventroyItem) {
 			throw new NotFoundException(
 				`Inventory Item already added for this item`,
 			);
@@ -93,5 +93,22 @@ export class InventoryItemsRepository {
 			expireDate ?? existInventroyItem.expireDate;
 		existInventroyItem.addedBy = existUser;
 		await this.inventroyItemsDatastroe.save(existInventroyItem);
+	}
+
+	public async deleteInventoryItem(
+		inventoryItemId: string,
+		activeUserId: string,
+	): Promise<void> {
+		const existUser = await this.userDatastore.getById(activeUserId);
+		if (!existUser) {
+			throw new NotFoundException(`User not found`);
+		}
+		const existInventroyItem =
+			await this.inventroyItemsDatastroe.getById(inventoryItemId);
+		if (!existInventroyItem) {
+			throw new NotFoundException(`Inventory item not found`);
+		}
+
+		await this.inventroyItemsDatastroe.deleteInventoryItem(inventoryItemId);
 	}
 }

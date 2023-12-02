@@ -29,6 +29,11 @@ export class InventoryItemsRoutes {
 			this.auth.verifyAccessToken,
 			this.inventoryItemController.updateInventoryItems,
 		);
+		this.router.delete(
+			'/delete/:inventoryItemId',
+			this.auth.verifyAccessToken,
+			this.inventoryItemController.deleteInventoryItem,
+		);
 	}
 
 	public getRouter() {

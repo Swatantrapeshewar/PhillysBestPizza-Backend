@@ -32,7 +32,7 @@ class InventoryItemsController {
 				data,
 				activeUser.id,
 			);
-			res.status(200).json({
+			res.status(201).json({
 				message: 'InventroyItem added successfully',
 			});
 		} catch (error) {
@@ -81,6 +81,27 @@ class InventoryItemsController {
 			res.status(200).json({
 				message: 'InventroyItem updated successfully',
 			});
+		} catch (error) {
+			next(error);
+		}
+	};
+
+	public deleteInventoryItem: express.RequestHandler = async (
+		req: express.Request,
+		res: express.Response,
+		next: express.NextFunction,
+	) => {
+		try {
+			const activeUser = UserContext.getActiveUser();
+			if (!activeUser) {
+				throw new NotFoundException(`User not found`);
+			}
+			const { inventoryItemId } = req.params;
+			await this.inventoryItemsRepository.deleteInventoryItem(
+				inventoryItemId,
+				activeUser.id,
+			);
+			res.status(200).json({});
 		} catch (error) {
 			next(error);
 		}
