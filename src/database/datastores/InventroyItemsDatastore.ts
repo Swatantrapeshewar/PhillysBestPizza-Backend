@@ -23,6 +23,7 @@ export class InventoryItemsDatastore {
 				.getRepository(InventoryItems)
 				.createQueryBuilder('InventoryItems')
 				.leftJoinAndSelect('InventoryItems.item', 'item')
+				.leftJoinAndSelect('item.category', 'category')
 				.leftJoin('InventoryItems.addedBy', 'addedBy')
 				.addSelect([
 					'addedBy.id',
@@ -55,6 +56,22 @@ export class InventoryItemsDatastore {
 				.getRepository(InventoryItems)
 				.createQueryBuilder('InventoryItems')
 				.where('InventoryItems.id = :id', { id: inventoryItemId })
+				.getOne();
+		});
+		if (queryResult) {
+			return queryResult;
+		}
+		return null;
+	}
+
+	public async getByItemId(itemId: string): Promise<InventoryItems | null> {
+		let queryResult: InventoryItems | undefined | null;
+		await dataSource.transaction(async (manager) => {
+			queryResult = await manager
+				.getRepository(InventoryItems)
+				.createQueryBuilder('InventoryItems')
+				.leftJoinAndSelect('InventoryItems.item', 'item')
+				.where('item.id = :id', { id: itemId })
 				.getOne();
 		});
 		if (queryResult) {

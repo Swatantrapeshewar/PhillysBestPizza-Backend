@@ -32,6 +32,13 @@ export class InventoryItemsRepository {
 			throw new NotFoundException(`Item not found`);
 		}
 
+		const existInventroyItem =
+			await this.inventroyItemsDatastroe.getByItemId(itemId);
+		if (!existInventroyItem) {
+			throw new NotFoundException(
+				`Inventory Item already added for this item`,
+			);
+		}
 		const newInventoryItem = new InventoryItems();
 		newInventoryItem.id = uuidv4();
 		newInventoryItem.quantity = quantity;
