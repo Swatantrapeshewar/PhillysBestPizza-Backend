@@ -4,7 +4,8 @@ import { UserContext } from '../../database/instanses/authentication/UserContext
 import {
 	InviteUserReq,
 	LoginReq,
-	UpdateUserReq,
+	UpdateUserProfileRequest,
+	UpdateUserRequest,
 } from './UserRequest.interface';
 import { NotFoundException } from '../../common/exception/NotFoundException';
 
@@ -138,7 +139,7 @@ class UserController {
 	};
 
 	public updateProfile: express.RequestHandler = async (
-		req: TypedRequestBody<UpdateUserReq>,
+		req: TypedRequestBody<UpdateUserProfileRequest>,
 		res: express.Response,
 		next: express.NextFunction,
 	) => {
@@ -171,6 +172,43 @@ class UserController {
 				branchId,
 			);
 			res.status(200).json({ usersList });
+		} catch (error) {
+			next(error);
+		}
+	};
+
+	public updateUser: express.RequestHandler = async (
+		req: TypedRequestBody<UpdateUserRequest>,
+		res: express.Response,
+		next: express.NextFunction,
+	) => {
+		try {
+			const activeUser = UserContext.getActiveUser();
+			if (!activeUser) {
+				throw new NotFoundException(`No user found`);
+			}
+			const data = req.body;
+			await this.userRepository.updateUser(data);
+			res.status(200).json({});
+		} catch (error) {
+			next(error);
+		}
+	};
+
+	public deleteUser: express.RequestHandler = async (
+		req: express.Request,
+		res: express.Response,
+		next: express.NextFunction,
+	) => {
+		try {
+			const activeUser = UserContext.getActiveUser();
+			if (!activeUser) {
+				throw new NotFoundException(`No user found`);
+			}
+
+			const { userId } = req.params;
+			await this.userRepository.deleteUserById(userId, activeUser.id);
+			res.status(201).json({});
 		} catch (error) {
 			next(error);
 		}

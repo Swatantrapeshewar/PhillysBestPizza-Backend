@@ -20,7 +20,6 @@ class UserRoutes {
 		this.router.post('/setup', this.userController.acconutSetup);
 		this.router.post('/forgotPassword', this.userController.forgotPassword);
 		this.router.post('/resetPassword', this.userController.resetPassword);
-
 		this.router.post(
 			'/invite',
 			this.auth.verifyAccessToken,
@@ -40,6 +39,16 @@ class UserRoutes {
 			'/me',
 			this.auth.verifyAccessToken,
 			this.userController.profile,
+		);
+		this.router.put(
+			'/updateUser',
+			this.auth.verifyAccessToken,
+			this.userController.updateUser,
+		);
+		this.router.delete(
+			'/deleteUser/:userId',
+			this.auth.verifyAccessToken,
+			this.userController.deleteUser,
 		);
 	}
 
