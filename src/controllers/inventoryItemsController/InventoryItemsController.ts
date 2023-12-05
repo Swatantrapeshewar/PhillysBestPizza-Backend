@@ -7,7 +7,6 @@ export interface InventroyItemsReq {
 	itemId: string;
 	quantity: number;
 	availableQuantity: number;
-	status: string;
 	expireDate: Date;
 }
 
@@ -50,11 +49,11 @@ class InventoryItemsController {
 			if (!activeUser) {
 				throw new NotFoundException(`User not found`);
 			}
-			const itemList =
+			const inventoryItemList =
 				await this.inventoryItemsRepository.inventoryItemsList(
 					activeUser.id,
 				);
-			res.status(200).json({ itemList });
+			res.status(200).json({ inventoryItemList });
 		} catch (error) {
 			next(error);
 		}

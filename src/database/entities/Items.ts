@@ -6,8 +6,10 @@ import {
 	UpdateDateColumn,
 	JoinColumn,
 	ManyToOne,
+	OneToMany,
 } from 'typeorm';
 import { Categories } from './Categories';
+import { InventoryItems } from './InventoryItems';
 
 @Entity('Items')
 export class Items {
@@ -41,4 +43,7 @@ export class Items {
 	@ManyToOne(() => Categories, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
 	@JoinColumn({ name: 'categoryId' })
 	public category!: Categories;
+
+	@OneToMany(() => InventoryItems, (inventoryItem) => inventoryItem.item)
+	public inventoryItem!: InventoryItems[];
 }

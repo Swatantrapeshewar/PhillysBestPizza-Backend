@@ -2,7 +2,10 @@ import { v4 as uuidv4 } from 'uuid';
 import { UserDatastore } from '../database/datastores/UserDatastore';
 import { NotFoundException } from '../common/exception/NotFoundException';
 import { ItemsDatastore } from '../database/datastores/ItemsDatastore';
-import { InventoryItems } from '../database/entities/InventoryItems';
+import {
+	InventoryItems,
+	statusType,
+} from '../database/entities/InventoryItems';
 import { InventoryItemsDatastore } from '../database/datastores/InventroyItemsDatastore';
 import { InventroyItemsReq } from '../controllers/inventoryItemsController/InventoryItemsController';
 
@@ -20,8 +23,7 @@ export class InventoryItemsRepository {
 		data: InventroyItemsReq,
 		activeUserId: string,
 	) {
-		const { availableQuantity, itemId, quantity, expireDate, status } =
-			data;
+		const { availableQuantity, itemId, quantity, expireDate } = data;
 		const existUser = await this.userDatastore.getById(activeUserId);
 		if (!existUser) {
 			throw new NotFoundException(`User not found`);
@@ -32,18 +34,19 @@ export class InventoryItemsRepository {
 			throw new NotFoundException(`Item not found`);
 		}
 
-		const existInventroyItem =
-			await this.inventroyItemsDatastroe.getByItemId(itemId);
-		if (existInventroyItem) {
-			throw new NotFoundException(
-				`Inventory Item already added for this item`,
-			);
-		}
+		// const existInventroyItem =
+		// 	await this.inventroyItemsDatastroe.getByItemId(itemId);
+		// if (existInventroyItem) {
+		// 	throw new NotFoundException(
+		// 		`Inventory Item already added for this item`,
+		// 	);
+		// }
 		const newInventoryItem = new InventoryItems();
 		newInventoryItem.id = uuidv4();
 		newInventoryItem.quantity = quantity;
 		newInventoryItem.availableQuantity = availableQuantity;
-		newInventoryItem.status = status;
+		newInventoryItem.status =
+			availableQuantity > 0 ? statusType.inStock : statusType.consumed;
 		newInventoryItem.expireDate = expireDate;
 		newInventoryItem.item = existItem;
 		newInventoryItem.addedBy = existUser;
@@ -67,8 +70,7 @@ export class InventoryItemsRepository {
 		inventoryItemId: string,
 		activeUserId: string,
 	): Promise<void> {
-		const { availableQuantity, itemId, quantity, expireDate, status } =
-			data;
+		const { availableQuantity, itemId, quantity, expireDate } = data;
 		const existUser = await this.userDatastore.getById(activeUserId);
 		if (!existUser) {
 			throw new NotFoundException(`User not found`);
@@ -88,7 +90,8 @@ export class InventoryItemsRepository {
 		existInventroyItem.quantity = quantity ?? existInventroyItem.quantity;
 		existInventroyItem.availableQuantity =
 			availableQuantity ?? existInventroyItem.availableQuantity;
-		existInventroyItem.status = status ?? existInventroyItem.status;
+		existInventroyItem.status =
+			availableQuantity > 0 ? statusType.inStock : statusType.consumed;
 		existInventroyItem.expireDate =
 			expireDate ?? existInventroyItem.expireDate;
 		existInventroyItem.addedBy = existUser;
