@@ -1,7 +1,12 @@
 import express from 'express';
 import { UserRepository } from '../../repositories/UserRepositoy';
 import { UserContext } from '../../database/instanses/authentication/UserContext';
-import { InviteUserReq, LoginReq } from './UserRequest.interface';
+import {
+	InviteUserReq,
+	LoginReq,
+	UpdateUserProfileRequest,
+	UpdateUserRequest,
+} from './UserRequest.interface';
 import { NotFoundException } from '../../common/exception/NotFoundException';
 
 export interface TypedRequestBody<T> extends Express.Request {
@@ -28,14 +33,18 @@ class UserController {
 		}
 	};
 
-	public profile: express.RequestHandler = (
+	public profile: express.RequestHandler = async (
 		req: express.Request,
 		res: express.Response,
 		next: express.NextFunction,
 	) => {
 		try {
 			const activeUser = UserContext.getActiveUser();
-			res.status(200).json({ activeUser });
+			if (!activeUser) {
+				throw new NotFoundException(`No user found`);
+			}
+			const user = await this.userRepository.profile(activeUser.id);
+			res.status(200).json({ user });
 		} catch (error) {
 			next(error);
 		}
@@ -79,14 +88,68 @@ class UserController {
 		}
 	};
 
-	public accoutSetup: express.RequestHandler = async (
-		req: TypedRequestBody<{ email: string; password: string }>,
+	public acconutSetup: express.RequestHandler = async (
+		req: TypedRequestBody<{
+			token: string;
+			email: string;
+			password: string;
+		}>,
 		res: express.Response,
 		next: express.NextFunction,
 	) => {
 		try {
-			const { email, password } = req.body;
-			await this.userRepository.accoutSetup(email, password);
+			const { token, email, password } = req.body;
+			await this.userRepository.acconutSetup(token, email, password);
+			res.status(200).json({});
+		} catch (error) {
+			next(error);
+		}
+	};
+
+	public forgotPassword: express.RequestHandler = async (
+		req: TypedRequestBody<{ email: string }>,
+		res: express.Response,
+		next: express.NextFunction,
+	) => {
+		try {
+			const { email } = req.body;
+			await this.userRepository.forgotPassword(email);
+			res.status(200).json({});
+		} catch (error) {
+			next(error);
+		}
+	};
+
+	public resetPassword: express.RequestHandler = async (
+		req: TypedRequestBody<{
+			email: string;
+			password: string;
+			token: string;
+		}>,
+		res: express.Response,
+		next: express.NextFunction,
+	) => {
+		try {
+			const { email, password, token } = req.body;
+			await this.userRepository.resetPassword(email, password, token);
+			res.status(200).json({});
+		} catch (error) {
+			next(error);
+		}
+	};
+
+	public updateProfile: express.RequestHandler = async (
+		req: TypedRequestBody<UpdateUserProfileRequest>,
+		res: express.Response,
+		next: express.NextFunction,
+	) => {
+		try {
+			const activeUser = UserContext.getActiveUser();
+			if (!activeUser) {
+				throw new NotFoundException(`No user found`);
+			}
+			const data = req.body;
+			await this.userRepository.updateProfile(data, activeUser.id);
 			res.status(200).json({});
 		} catch (error) {
 			next(error);
@@ -109,6 +172,43 @@ class UserController {
 				branchId,
 			);
 			res.status(200).json({ usersList });
+		} catch (error) {
+			next(error);
+		}
+	};
+
+	public updateUser: express.RequestHandler = async (
+		req: TypedRequestBody<UpdateUserRequest>,
+		res: express.Response,
+		next: express.NextFunction,
+	) => {
+		try {
+			const activeUser = UserContext.getActiveUser();
+			if (!activeUser) {
+				throw new NotFoundException(`No user found`);
+			}
+			const data = req.body;
+			await this.userRepository.updateUser(data);
+			res.status(200).json({});
+		} catch (error) {
+			next(error);
+		}
+	};
+
+	public deleteUser: express.RequestHandler = async (
+		req: express.Request,
+		res: express.Response,
+		next: express.NextFunction,
+	) => {
+		try {
+			const activeUser = UserContext.getActiveUser();
+			if (!activeUser) {
+				throw new NotFoundException(`No user found`);
+			}
+
+			const { userId } = req.params;
+			await this.userRepository.deleteUserById(userId, activeUser.id);
+			res.status(201).json({});
 		} catch (error) {
 			next(error);
 		}

@@ -17,17 +17,38 @@ class UserRoutes {
 	private setupRoutes() {
 		// Auth the user
 		this.router.post('/login', this.userController.userLogin);
+		this.router.post('/setup', this.userController.acconutSetup);
+		this.router.post('/forgotPassword', this.userController.forgotPassword);
+		this.router.post('/resetPassword', this.userController.resetPassword);
 		this.router.post(
 			'/invite',
 			this.auth.verifyAccessToken,
 			this.userController.inviteUser,
 		);
-		this.router.post('/verify', this.userController.verifyUser);
-		this.router.post('/setup', this.userController.accoutSetup);
+		this.router.put(
+			'/updateProfile',
+			this.auth.verifyAccessToken,
+			this.userController.updateProfile,
+		);
 		this.router.get(
 			'/listByBranch/:branchId',
 			this.auth.verifyAccessToken,
 			this.userController.usersListByBranch,
+		);
+		this.router.get(
+			'/me',
+			this.auth.verifyAccessToken,
+			this.userController.profile,
+		);
+		this.router.put(
+			'/updateUser',
+			this.auth.verifyAccessToken,
+			this.userController.updateUser,
+		);
+		this.router.delete(
+			'/deleteUser/:userId',
+			this.auth.verifyAccessToken,
+			this.userController.deleteUser,
 		);
 	}
 

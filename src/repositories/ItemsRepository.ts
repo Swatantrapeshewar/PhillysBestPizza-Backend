@@ -60,4 +60,50 @@ export class ItemsRepository {
 		const items = await this.itemDatastore.getAllItems();
 		return items;
 	}
+
+	public async updateItem(
+		data: ItemsReq,
+		itemId: string,
+		activeUserId: string,
+	): Promise<void> {
+		const existUser = await this.userDatastore.getById(activeUserId);
+		if (!existUser) {
+			throw new NotFoundException(`User not found`);
+		}
+
+		const doesItemExist = await this.itemDatastore.getById(itemId);
+		if (!doesItemExist) {
+			throw new NotFoundException(`Item not found`);
+		}
+		const category = await this.categoryDatastore.getById(data.categoryId);
+		if (!category) {
+			throw new NotFoundException(`Category not found`);
+		}
+		(doesItemExist.name = data.name),
+			(doesItemExist.description = data.description ?? null),
+			(doesItemExist.image = data.image ?? null),
+			(doesItemExist.dailyThreshold = data.dailyThreshold ?? null),
+			(doesItemExist.weeklyThreshold = data.weeklyThreshold ?? null),
+			(doesItemExist.overallThreshold = data.overallThreshold ?? null);
+		doesItemExist.category = category;
+
+		await this.itemDatastore.save(doesItemExist);
+	}
+
+	public async deleteItem(
+		itemId: string,
+		activeUserId: string,
+	): Promise<void> {
+		const existUser = await this.userDatastore.getById(activeUserId);
+		if (!existUser) {
+			throw new NotFoundException(`User not found`);
+		}
+
+		const doesItemExist = await this.itemDatastore.getById(itemId);
+		if (!doesItemExist) {
+			throw new NotFoundException(`Branch not found`);
+		}
+
+		await this.itemDatastore.deleteItem(itemId);
+	}
 }

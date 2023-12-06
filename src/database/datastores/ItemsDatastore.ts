@@ -26,7 +26,7 @@ export class ItemsDatastore {
 		return queryResult;
 	}
 
-	public async deleteBranch(itemId: string): Promise<void> {
+	public async deleteItem(itemId: string): Promise<void> {
 		await dataSource.transaction(async (manager) => {
 			await manager
 				.getRepository(Items)
@@ -50,5 +50,22 @@ export class ItemsDatastore {
 			return queryResult;
 		}
 		return null;
+	}
+
+	public async getTotalItems(): Promise<number> {
+		try {
+			let queryResult: number | undefined = 0;
+			await dataSource.transaction(async (manager) => {
+				queryResult = await manager
+					.getRepository(Items)
+					.createQueryBuilder('Items')
+					.select('COUNT(items.id)', 'count')
+					.getRawOne();
+			});
+			return queryResult ?? 0;
+		} catch (error) {
+			console.error('Error in getTotalItems:', error);
+			throw error;
+		}
 	}
 }
