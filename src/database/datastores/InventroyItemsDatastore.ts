@@ -116,4 +116,24 @@ export class InventoryItemsDatastore {
 			throw error; // Rethrow the error for the calling code to handle
 		}
 	}
+
+	public async getInventoryItemsListByBranch(
+		branchId: string,
+	): Promise<InventoryItems[] | undefined> {
+		let queryResult: InventoryItems[] | undefined | null;
+		await dataSource.transaction(async (manager) => {
+			queryResult = await manager
+				.getRepository(InventoryItems)
+				.createQueryBuilder('InventoryItems')
+				.leftJoinAndSelect('InventoryItems.item', 'item')
+				.leftJoinAndSelect('item.category', 'category')
+				.leftJoinAndSelect('InventoryItems.branch', 'branch')
+				.where('InventoryItems.branch = :branchId', { branchId })
+				.getMany();
+		});
+
+		if (queryResult) {
+			return queryResult;
+		}
+	}
 }
