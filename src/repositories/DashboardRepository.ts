@@ -34,18 +34,50 @@ export class DashboardRepository {
 		this.categoryDatastore = new CategoryDatastore();
 	}
 
-	public async getDashboardDetails(activeUserId: string): Promise<unknown> {
+	public async getDashboardDetailsByBranch(
+		activeUserId: string,
+		branchId: string,
+	): Promise<unknown> {
 		const existUser = await this.userDatastore.getById(activeUserId);
 		if (!existUser) {
 			throw new NotFoundException(`User not found`);
 		}
 
 		// 1. Get the Total Items from the DB
-		const getTotalItems = await this.itemDatastore.getTotalItems();
+		const getTotalBranchItems =
+			await this.itemDatastore.getTotalItemsByBranch(branchId);
 
 		// 2. Get the Total Categories from the DB
 		const getTotalCategories =
 			await this.categoryDatastore.getTotalCategories();
+
+		//	3. Get Toal stock count present in inventory
+		const getTotalQuantity =
+			await this.inventoryItemsDatastore.getInventoryTotalStocksByBranch(
+				branchId,
+			);
+
+		//	4. Get Low Inventory Stock By branch
+		const lowStockDetails =
+			await this.inventoryItemsDatastore.getLowInventoryStocksBranch(
+				branchId,
+			);
+
+		//	5. Get Branch Recent Orders
+		const recentOrders =
+			await this.inventoryItemsDatastore.getRecentOrdersByBranch(
+				branchId,
+			);
+
+		//	6. Get Total Wasted Items
+		const totalWastedItems =
+			await this.inventoryItemsDatastore.getTotalItemsWastedByBranch(
+				branchId,
+			);
+
+		//	7. Get Items wased count items-by-items
+		const wastedItemsList =
+			await this.inventoryItemsDatastore.getItemsWastedByBranch(branchId);
 
 		// 3. Get the Items with Total Stock
 		const itemsWithTotalStock: itemTotalStockResponse[] =
@@ -66,8 +98,13 @@ export class DashboardRepository {
 			);
 		});
 		return {
-			totalItems: getTotalItems,
+			totalItems: getTotalBranchItems,
 			totalCategories: getTotalCategories,
+			totalQuantity: getTotalQuantity,
+			lowStocks: lowStockDetails,
+			recentOrders: recentOrders,
+			totalWastedItems: totalWastedItems,
+			wastedItemsList: wastedItemsList,
 			itemsWithTotalStock: itemsWithTotalStock,
 		};
 	}
