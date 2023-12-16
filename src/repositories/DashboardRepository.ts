@@ -87,7 +87,8 @@ export class DashboardRepository {
 		itemsWithTotalStock.map((item) => {
 			const dailyConsumption = parseInt(item.dailyConsumption);
 			const currentStock = parseInt(item.availableQuantity);
-			const dailyThreshold = parseInt(item.dailyThreshold);
+			// const dailyThreshold = parseInt(item.dailyThreshold);
+			const dailyThreshold = 10;
 			const overallThreshold = parseInt(item.overallThreshold);
 
 			item['healthScore'] = this.calculateHealthScore(
