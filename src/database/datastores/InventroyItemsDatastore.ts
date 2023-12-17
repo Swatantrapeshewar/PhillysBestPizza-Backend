@@ -128,6 +128,13 @@ export class InventoryItemsDatastore {
 				.leftJoinAndSelect('InventoryItems.item', 'item')
 				.leftJoinAndSelect('item.category', 'category')
 				.leftJoinAndSelect('InventoryItems.branch', 'branch')
+				.leftJoin('InventoryItems.addedBy', 'addedBy')
+				.addSelect([
+					'addedBy.id',
+					'addedBy.email',
+					'addedBy.firstName',
+					'addedBy.lastName',
+				])
 				.where('InventoryItems.branch = :branchId', { branchId })
 				.getMany();
 		});
@@ -169,19 +176,30 @@ export class InventoryItemsDatastore {
 			await dataSource.transaction(async (manager) => {
 				queryResult = await manager
 					.getRepository(InventoryItems)
-					.createQueryBuilder('inventoryitems')
-					.leftJoin(
-						'items',
-						'items',
-						'items.id = inventoryitems.itemId',
-					)
-					.where('inventoryitems.branchId = :branchId', { branchId })
-					.groupBy('inventoryitems.branchId')
-					.groupBy('items.id')
+					.createQueryBuilder('InventoryItems')
+					// .leftJoin(
+					// 	'items',
+					// 	'items',
+					// 	'items.id = InventoryItems.itemId',
+					// )
+					.leftJoin('InventoryItems.item', 'item')
+					.addSelect(['item.id', 'item.name'])
+					.leftJoin('InventoryItems.branch', 'branch')
+					.addSelect(['branch.id', 'branch.storeName'])
+					.leftJoin('InventoryItems.addedBy', 'addedBy')
+					.addSelect([
+						'addedBy.id',
+						'addedBy.email',
+						'addedBy.firstName',
+						'addedBy.lastName',
+					])
+					.where('InventoryItems.branchId = :branchId', { branchId })
+					.groupBy('InventoryItems.branchId')
+					.groupBy('item.id')
 					.having(
-						'SUM(inventoryitems.availableQuantity) < MAX(`items`.overallThreshold)',
+						'SUM(InventoryItems.availableQuantity) < MAX(`item`.overallThreshold)',
 					)
-					.getRawMany();
+					.getMany();
 			});
 			return queryResult;
 		} catch (error) {
@@ -198,11 +216,22 @@ export class InventoryItemsDatastore {
 			await dataSource.transaction(async (manager) => {
 				queryResult = await manager
 					.getRepository(InventoryItems)
-					.createQueryBuilder('inventoryitems')
-					.where('inventoryitems.branchId = :branchId', { branchId })
+					.createQueryBuilder('InventoryItems')
+					.leftJoin('InventoryItems.item', 'item')
+					.addSelect(['item.id', 'item.name'])
+					.leftJoin('InventoryItems.branch', 'branch')
+					.addSelect(['branch.id', 'branch.storeName'])
+					.leftJoin('InventoryItems.addedBy', 'addedBy')
+					.addSelect([
+						'addedBy.id',
+						'addedBy.email',
+						'addedBy.firstName',
+						'addedBy.lastName',
+					])
+					.where('InventoryItems.branch = :branchId', { branchId })
 					.orderBy('inventoryitems.addedAt')
 					.limit(10)
-					.getRawMany();
+					.getMany();
 			});
 			return queryResult;
 		} catch (error) {
